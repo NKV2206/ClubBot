@@ -1,0 +1,7 @@
+import hikari (API)
+import datetime 
+import lightbulb
+Virtual Environment to run the code
+import pymongo
+import asyncio
+python version 3.8
