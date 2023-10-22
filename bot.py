@@ -12,7 +12,8 @@ from pymongo import MongoClient
 mongo_client =MongoClient("localhost", 27017)
 db = mongo_client["WEC_BOT"]  
 collection=db["wecs"]
-collection2=db['WEC_Members']
+collection2=db['WEC_NONTECH']
+collection3=db['WEC_Members']
 
 
 bot=lightbulb.BotApp(token='MTE2MjAwNTA4MjE1MDI3NzE0MQ.GhZHqw.umaEvikHFkkABnBBAA_-c6tPDMj-o85GbhRcHs',intents=hikari.Intents.ALL,default_enabled_guilds=(1162015150853861398))#instantiating a bot
@@ -45,7 +46,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data1 = collection.find( {"$and":[{"Type":"TECH"},{"date": {"$gte": thirty_days_ago,"$lt": current_date}}]}).sort('date',pymongo.DESCENDING) # Customize the query as per your data structure 
+    wec_data1 = collection.find( {"$and":[{"Type":"TECH"},{"date": {"$gte": thirty_days_ago,"$lt": current_date}}]} ).sort('date',pymongo.DESCENDING) # Customize the query as per your data structure
 
     wec_info = "\U0001F4BB Recently Concluded Events:\U0001F4BB \n"
     for i in wec_data1:
@@ -58,7 +59,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data1 = collection2.find( ) # Customize the query as per your data structure
+    wec_data1 = collection3.find() # Customize the query as per your data structure
 
     wec_info = "\U0001F389 Our Core Team \U0001F389 \n"
     for i in wec_data1:
@@ -70,7 +71,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data = collection.find({"$and":[{"Type":"NON-TECH"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Customize the query as per your data structure
+    wec_data = collection.find({"$and":[{"Type":"NON-TECH"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)   # Customize the query as per your data structure
 
     wec_info = "\U0001F600 Upcoming Non-Tech Events: \U0001F600 \n"
     for i in wec_data:
@@ -82,11 +83,13 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data1 = collection.find( {"$and":[{"Type":"NON-TECH"},{"date": {"$gte": thirty_days_ago,"$lt": current_date}}]} ).sort('date',pymongo.DESCENDING) # Customize the query as per your data structure
+    wec_data1 = collection.find({"$and":[{"Type":"NON-TECH"},{"date": {"$gte": thirty_days_ago,"$lt": current_date}}]}).sort('date',pymongo.DESCENDING) # Customize the query as per your data structure
 
     wec_info = "\U0001F600 Recently Concluded Events:\U0001F600 \n"
+    x=1;
     for i in wec_data1:
-        wec_info += f"{i['Name']}  :  {i['date']}\n"
+        wec_info += f"{x}. {i['Name']}  :  {i['date']}\n"
+        x+=1
 
     await ctx.respond(wec_info)
 
@@ -102,8 +105,10 @@ async def events(ctx):
         next(wec_data)
         wec_data.rewind()
         wec_info+="Some of Our Upcoming Events are...\n"
+        x=1;
         for i in wec_data:
-            wec_info += f"{i['Name']}: {i['date']}\n"
+            wec_info += f"{x}. {i['Name']}  :  {i['date']}\n"
+            x+=1
     except:
         wec_info+="We Don\'t Have any Upcoming Events..\nStay Tuned as we will be back wih more events\n"
     wec_info+="Follow the WEC Insta page for Latest Updates on WEC events : https://www.instagram.com/wecnitk/"
@@ -122,8 +127,10 @@ async def events(ctx):
         next(wec_data)
         wec_data.rewind()
         wec_info+="Some of Our Upcoming Events are...\n"
+        x=1
         for i in wec_data:
-            wec_info += f"{i['Name']}: {i['date']}\n"
+            wec_info += f"{x}. {i['Name']}  :  {i['date']}\n"
+            x+=1
     except:
         wec_info+="We Don\'t Have any Upcoming Events..\nStay Tuned as we will be back wih more events\n"
     wec_info+="Follow the WEC Insta page for Latest Updates on WEC events : https://www.instagram.com/wecnitk/"
@@ -142,8 +149,10 @@ async def events(ctx):
         next(wec_data)
         wec_data.rewind()
         wec_info+="Some of Our Upcoming Events are...\n"
+        x=1
         for i in wec_data:
-            wec_info += f"{i['Name']}: {i['date']}\n"
+            wec_info += f"{x}. {i['Name']}  :  {i['date']}\n"
+            x+=1
     except:
         wec_info+="We Don\'t Have any Upcoming Events..\nStay Tuned as we will be back wih more events\n"
     wec_info+="Follow the WEC Insta page for Latest Updates on WEC events : https://www.instagram.com/wecnitk/"
@@ -162,8 +171,10 @@ async def events(ctx):
         next(wec_data)
         wec_data.rewind()
         wec_info+="Some of Our Upcoming Events are...\n"
+        x=1
         for i in wec_data:
-            wec_info += f"{i['Name']}: {i['date']}\n"
+            wec_info += f"{x}. {i['Name']}  :  {i['date']}\n"
+            x+=1
     except:
         wec_info+="We Don\'t Have any Upcoming Events..\nStay Tuned as we will be back wih more events\n"
     wec_info+="Follow the WEC Insta page for Latest Updates on WEC events : https://www.instagram.com/wecnitk/"
