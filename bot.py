@@ -10,8 +10,10 @@ current_date=current_date.strftime("%Y-%m-%d")
 
 from pymongo import MongoClient
 mongo_client =MongoClient("localhost", 27017)
+mongo_client2=MongoClient("mongodb+srv://root:root@wec.j6x4rdp.mongodb.net/?retryWrites=true&w=majority")
+db2=mongo_client2['events']
 db = mongo_client["WEC_BOT"]  
-collection=db["wecs"]
+collection=db2["wecs"]
 collection2=db['WEC_NONTECH']
 collection3=db['WEC_Members']
 
