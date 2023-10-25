@@ -4,17 +4,18 @@ import pymongo
 from datetime import datetime,timedelta
 import asyncio
 current_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+current_date-=timedelta(days=1)
 thirty_days_ago = (datetime.now() - timedelta(days=30)).replace(hour=0, minute=0, second=0, microsecond=0)
 thirty_days_ago=thirty_days_ago.strftime("%Y-%m-%d")
 current_date=current_date.strftime("%Y-%m-%d")
 
+
 from pymongo import MongoClient
 mongo_client =MongoClient("localhost", 27017)
-mongo_client2=MongoClient("mongodb+srv://root:root@wec.j6x4rdp.mongodb.net/?retryWrites=true&w=majority")
-db2=mongo_client2['events']
+
+db2=mongo_client['WEC_BOT']
 db = mongo_client["WEC_BOT"]  
 collection=db2["wecs"]
-collection2=db['WEC_NONTECH']
 collection3=db['WEC_Members']
 
 
@@ -35,7 +36,7 @@ async def ping(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data = collection.find({"$and":[{"Type":"TECH"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Customize the query as per your data structure
+    wec_data = collection.find({"$and":[{"Type":"TECH"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Fetching upcoming events of type tech from database
 
     wec_info = "\U0001F4BB Upcoming Events: \U0001F4BB \n"
     for i in wec_data:
@@ -48,7 +49,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data1 = collection.find( {"$and":[{"Type":"TECH"},{"date": {"$gte": thirty_days_ago,"$lt": current_date}}]} ).sort('date',pymongo.DESCENDING) # Customize the query as per your data structure
+    wec_data1 = collection.find( {"$and":[{"Type":"TECH"},{"date": {"$gte": thirty_days_ago,"$lt": current_date}}]} ).sort('date',pymongo.DESCENDING) # fetching past tech events from database
 
     wec_info = "\U0001F4BB Recently Concluded Events:\U0001F4BB \n"
     for i in wec_data1:
@@ -61,7 +62,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data1 = collection3.find() # Customize the query as per your data structure
+    wec_data1 = collection3.find() # fetching the details of the core team members
 
     wec_info = "\U0001F389 Our Core Team \U0001F389 \n"
     for i in wec_data1:
@@ -73,8 +74,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data = collection.find({"$and":[{"Type":"NON-TECH"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)   # Customize the query as per your data structure
-
+    wec_data = collection.find({"$and":[{"Type":"NON-TECH"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)   # Fetching upcoming events of non-type tech from database
     wec_info = "\U0001F600 Upcoming Non-Tech Events: \U0001F600 \n"
     for i in wec_data:
         wec_info += f"\n{i['Name']}: {i['date']}"
@@ -85,7 +85,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data1 = collection.find({"$and":[{"Type":"NON-TECH"},{"date": {"$gte": thirty_days_ago,"$lt": current_date}}]}).sort('date',pymongo.DESCENDING) # Customize the query as per your data structure
+    wec_data1 = collection.find({"$and":[{"Type":"NON-TECH"},{"date": {"$gte": thirty_days_ago,"$lt": current_date}}]}).sort('date',pymongo.DESCENDING) # Fetching past events of type non-tech from database
 
     wec_info = "\U0001F600 Recently Concluded Events:\U0001F600 \n"
     x=1;
@@ -100,8 +100,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data = collection.find({"$and":[{"sig":"Development"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Customize the query as per your data structure
-
+    wec_data = collection.find({"$and":[{"sig":"Development"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Fetching events of the development sig
     wec_info = "About Us : We focus on helping students bridge the gap between theory and practice in software development. Students grow their knowledge in a peer-to-peer learning environment while building solutions to existing problems and helping the communities around through various projects and events. We have tried our hands on backend, frontend, mobile development and are now venturing into game development as well\n"
     try:
         next(wec_data)
@@ -122,7 +121,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data = collection.find({"$and":[{"sig":"Intelligence"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Customize the query as per your data structure
+    wec_data = collection.find({"$and":[{"sig":"Intelligence"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Fetching events of the intelligence sig
 
     wec_info = "About Us : We focus on understanding human intelligence and applying it to machines for the benefit of humanity. We explore the domains of Machine Learning (ML) and Artificial Intelligence (AI), focusing on both research and applications. We research topics in ML theory, Deep Learning, Reinforcement Learning, Data Science, etc. and their applications in simulated and real worlds. We are also interested in competitive ML, primarily participating in Kaggle contests and applying ML techniques for software products\n"
     try:
@@ -144,7 +143,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data = collection.find({"$and":[{"sig":"Algorithms"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Customize the query as per your data structure
+    wec_data = collection.find({"$and":[{"sig":"Algorithms"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Fetching events of the algorithms sig
 
     wec_info = "About Us : We are a group of coding enthusiasts whose aim is to promote Competitive Programming culture at NITK. As part of this mission, we conduct many workshops and contests related to CP. We also conduct sessions like Codebuddy as a bridge between junior-senior. This year we are starting a new mentorship program as part of the SIG to help students in the field of coding skills required to crack interviews for internships and placements\n"
     try:
@@ -166,7 +165,7 @@ async def events(ctx):
 @lightbulb.implements(lightbulb.SlashCommand)
 async def events(ctx):
     """A command to display information about club events from MongoDB."""
-    wec_data = collection.find({"$and":[{"sig":"Systems"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Customize the query as per your data structure
+    wec_data = collection.find({"$and":[{"sig":"Systems"},{"date":{"$gt": current_date}}]}).sort('date',pymongo.ASCENDING)  # Fetching events of the systems sig
 
     wec_info = "About Us : We are group of motivated, passionate students who are interested in exploring the various avenues of computer systems . The Systems and Security SIG deals with a broad range of domains including Networks and Distributed Systems, Blockchains, Security, OS, DBMS and Architecture. We are enthusiastic about exploring large open source projects like the Linux kernel. Whether you're interested in Capture the Flag (CTF) security challenges or understanding how large systems like Netflix work, Systems and Security SIG is your go-to group at NITK\n"
     try:
