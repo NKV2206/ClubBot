@@ -1,4 +1,4 @@
-# WECREC
+# CluBot
 Discord bot application to display the events of WEC Club 
 
 Using API hikari and A command handler library lightbulb
