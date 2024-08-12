@@ -19,7 +19,7 @@ Slash Commands have been used to display the following commands..
 
 The Data is stored in mongodb database
 
-To Update The contents of the database An Interface is created using Express,EJS Templating Engine, MongoDB and Node JS
+To Update The contents of the database An Interface is created using Express, MongoDB and Node JS
 
 Through the interface The user can add events,edit the existing data and/or delete the existing data
 
